@@ -23,7 +23,13 @@ void DrawTool::drawAtText(const std::string& text, cv::Point pos, double size, c
     int baseline = 0;
     cv::Size textSize = cv::getTextSize(text, cv::FONT_HERSHEY_SIMPLEX, size, thickness, &baseline);
     cv::Point textPos(pos.x - textSize.width / 2, pos.y + textSize.height / 2);
-    cv::putText(image, text, textPos, cv::FONT_HERSHEY_SIMPLEX, size, color, thickness);
+    // cv::putText(image, text, textPos, cv::FONT_HERSHEY_SIMPLEX, size, color, thickness);
+    // cv::putText(image, text, textPos, cv::FONT_HERSHEY_DUPLEX|cv::FONT_ITALIC, size, color, thickness);
+    // cv::putText(image, text, textPos, cv::FONT_HERSHEY_SCRIPT_SIMPLEX|cv::FONT_ITALIC, size, color, thickness);
+    // cv::putText(image, text, textPos, cv::FONT_HERSHEY_PLAIN, size, color, thickness);
+    cv::putText(image, text, textPos, cv::FONT_HERSHEY_SIMPLEX|cv::FONT_ITALIC, size, color, thickness);
+    // cv::putText(image, text, textPos, cv::FONT_HERSHEY_SCRIPT_SIMPLEX, size, color, thickness);
+    
 }
 
 void DrawTool::drawButton(const Button& button, const std::string& text, cv::Scalar color, int thickness, int lineType,
