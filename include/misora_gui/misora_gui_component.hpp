@@ -37,11 +37,13 @@ public:
     std::vector<std::string> buttons_name;//表示しているボタンのリスト
     std::vector<Button> buttons_; // ボタン位置、サイズのリスト
     cv::Size btn_size;
+    std::vector<std::map<std::string, bool>> receive_list;
+    int bulb_state_count = 0;
 
     explicit DistributeImage(const rclcpp::NodeOptions &options);
     DistributeImage() : DistributeImage(rclcpp::NodeOptions{}) {}
 
-    cv::Mat setup(std::string n,std::vector<std::string> p);
+    cv::Mat setup(std::vector<std::string> p);
 
 private:
     void topic_callback(const std_msgs::msg::String::SharedPtr msg);

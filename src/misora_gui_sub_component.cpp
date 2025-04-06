@@ -10,11 +10,11 @@ DistributeImage_sub::DistributeImage_sub(const rclcpp::NodeOptions &options)
     std::string param = this->get_parameter("sub_parameter").as_string();
 
     std::map<std::string, std::vector<std::string>> sub_topics = {
-        {"P1", {"meter", "qr", "0 | 1"}},
-        {"P2", {"meter", "qr", "OP | CL", "0 | 1"}},
-        {"P3", {"crack", "qr", "thick"}},
-        {"P4", {"qr", "disaster", "0 | 1", "debris"}},
-        {"P6",{"meter", "qr", "debris", "disaster", "missing"}},
+        {"P1", {"pressure", "qr", "V_maneuve"}},
+        {"P2", {"pressure", "qr", "V_maneuve", "V_state"}},
+        {"P3", {"cracks", "qr", "metal_loss"}},
+        {"P4", {"qr", "disaster", "debris", "V_maneuve"}},
+        {"P6", {"pressure", "qr", "debris", "disaster", "missing"}}
     };
     
     category_publisher_ = this->create_publisher<std_msgs::msg::String>("return_name", 10);
@@ -23,7 +23,7 @@ DistributeImage_sub::DistributeImage_sub(const rclcpp::NodeOptions &options)
     if (sub_topics.find(param) != sub_topics.end()) {
         for (const auto &topic : sub_topics[param]) {
             // 2. 各トピックごとに subscriber を作成
-            if(topic == "meter" || topic == "qr" || topic == "crack" || topic == "thick"){
+            if(topic == "pressure" || topic == "qr" || topic == "cracks" || topic == "metal_loss"){
                 string_subscribers_[topic] = this->create_subscription<std_msgs::msg::String>(
                     topic+"_result_data",10,
                     [this, topic](const std_msgs::msg::String::SharedPtr msg){
@@ -45,9 +45,7 @@ DistributeImage_sub::DistributeImage_sub(const rclcpp::NodeOptions &options)
             }
             else {
                 std::string topic_name = topic;
-                if(topic == "0 | 1") topic_name = "bulb_operate";
-                else if(topic == "OP | CL") topic_name = "bulb";
-
+    
                 string_subscribers_[topic] = this->create_subscription<std_msgs::msg::String>(
                     topic_name+"_report",10,
                     [this, topic](const std_msgs::msg::String::SharedPtr msg){
